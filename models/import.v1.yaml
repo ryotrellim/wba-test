@@ -1,0 +1,9 @@
+title: importWbaBookableResources
+type: object
+properties:
+  importWalgreensBookableResources:
+    type: boolean
+  importBootsBookableResources:
+    type: boolean
+  importCustomBookableResources:
+    type: string

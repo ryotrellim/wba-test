@@ -1,0 +1,19 @@
+title: calendarResponseBody.v2
+type: object
+description: ''
+properties:
+  id:
+    type: string
+    description: slotID
+  employeeId:
+    type: string
+  date:
+    type: string
+  startDateTime:
+    type: string
+  endDateTime:
+    type: string
+  serviceDuration:
+    type: string
+  status:
+    type: string

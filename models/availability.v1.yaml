@@ -1,0 +1,12 @@
+title: availability
+type: array
+items:
+  type: object
+  properties:
+    day:
+      type: string
+    startTime:
+      type: string
+    endTime:
+      type: string
+description: 'This is the way that the availability of a location, service or resource is expressed.'

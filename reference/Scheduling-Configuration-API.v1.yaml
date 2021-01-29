@@ -1,0 +1,360 @@
+openapi: 3.0.0
+tags:
+  - name: Scheduling
+  - name: Scheduling Configuration
+  - name: Bookable Services
+  - name: Bookable Resources
+  - name: Import Resources
+  - name: Calendar
+info:
+  version: v1.0
+  title: Configuration API
+  contact:
+    name: Brian Smith
+    email: brian.robert.smith@walgreens.com
+  description: |-
+    The Scheduling Management API allows developers to set-up the appointment booking platform, including:
+    - Define locations where appointments are offered
+    - Define the bookable services offered at those locations
+    - Define the bookable resources that are required to adminster the service at the location
+paths:
+  /bookableServices:
+    get:
+      summary: Get a List of Bookable Services
+      description: 'A bookable service describes the service being offered, including the name, a short description, a service category, the duration of the service, where the service is offered, and the number of appointments that are required to resceive the appointment.  '
+      operationId: getBookableServices
+      parameters:
+        - in: query
+          name: locationID
+          description: The id of the store location whose bookable services you wish to view.
+          schema:
+            type: number
+            example: Company/7f739612-23e3-4e01-9418-6ec6bc16fa87
+          required: false
+        - in: query
+          name: bookableServiceCategory
+          description: Filter Bookable Services by their Category. Values include...
+          schema:
+            type: string
+            example: Company/7f739612-23e3-4e01-9418-6ec6bc16fa87
+          required: false
+      responses:
+        '200':
+          description: ok
+          content:
+            application/xml:
+              schema:
+                type: array
+                items:
+                  $ref: ../models/bookableServicesResponse.v1.yaml
+      tags:
+        - Bookable Services
+    post:
+      summary: Create a Bookable Service
+      operationId: createBookableService
+      description: Create a service for which an appointment can be offered.
+      responses:
+        '200':
+          description: ok
+          content:
+            application/xml:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+      tags:
+        - Bookable Services
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: ../models/BookableServicesRequestBody.v1.yaml
+  /bookableService/bookableServiceCategory:
+    get:
+      summary: Get a List of Bookable Service Categories
+      tags:
+        - Bookable Services
+      operationId: get-bookableService-bookableServiceCategory
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: ../models/bookableServiceCategoryResponse.v1.yaml
+      description: Retrieve a list of Bookable Service Categories that have been assigned to Bookable Services
+  '/bookableServices/{id}':
+    get:
+      summary: Get a Bookable Service
+      operationId: getBookableService
+      description: Access a specific bookable service that can be booked as an appointments.
+      parameters:
+        - name: id
+          in: path
+          description: Bookable Service ID
+          required: true
+          schema:
+            type: integer
+            format: int64
+      tags:
+        - Bookable Services
+    put:
+      summary: Update a Bookable Services
+      operationId: updateBookableServices
+      description: Modify a Bookable Service
+      parameters:
+        - name: id
+          in: path
+          description: Bookable Service ID
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: ../models/bookableServicesResponse.v1.yaml
+      tags:
+        - Bookable Services
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: ../models/updateBookableServicesRequestBody.v1.yaml
+    delete:
+      summary: Delete a Bookable Service
+      operationId: deleteBookableService
+      description: Delete a Bookable Service.
+      parameters:
+        - name: id
+          in: path
+          description: Bookable Service ID
+          required: true
+          schema:
+            type: integer
+            format: int64
+      tags:
+        - Bookable Services
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+  /bookableResources:
+    get:
+      summary: Get a List of Bookable Resources
+      operationId: getBookableResources
+      description: 'A bookable resource is a resource that is required and qualified to administer a bookable service.  '
+      parameters:
+        - in: query
+          name: bookableResourceType
+          schema:
+            type: string
+            example: null
+          required: false
+        - schema:
+            type: number
+          in: query
+          name: bookableServiceId
+        - schema:
+            type: number
+          in: query
+          name: locationId
+        - schema:
+            type: number
+          in: query
+          name: employeeId
+      responses:
+        '200':
+          description: ok
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: ../models/bookableResourceResponseBody.v1.yaml
+      tags:
+        - Bookable Resources
+    post:
+      summary: Create a Bookable Resources
+      operationId: createBookableResource
+      description: Create a bookable resources
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+      tags:
+        - Bookable Resources
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: ../models/bookableResourcesRequestBody.v1.yaml
+  '/bookableResources/{id}':
+    get:
+      summary: Get a Bookable Resource
+      operationId: getBookableResource
+      description: Access a specific bookable service that can be booked as an appointments.
+      parameters:
+        - name: id
+          in: path
+          description: Bookable Service ID
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - schema:
+            type: number
+          in: query
+          name: id
+          description: resourceID
+      tags:
+        - Bookable Resources
+    put
+      summary: Update a Bookable Resource
+      operationId: updateBookableResource
+      description: Update a Bookable Resource
+      parameters:
+        - name: id
+          in: path
+          description: Bookable Service ID
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: ../models/bookableResourcesRequestBody.v1.yaml
+      responses:
+        '401':
+          description: 'Unauthorized -- Need to prevent the user from changing data that came from HR Hub, such as the name, phone number or email.  '
+          content:
+            application/json:
+              schema:
+                $ref: ../models/bookableResourcesRequestBody.v1.yaml
+      tags:
+        - Bookable Resources
+    delete:
+      summary: Delete a Bookable Resources
+      operationId: deleteBookableResources
+      description: Delete a Bookable Resource
+      parameters:
+        - name: id
+          in: path
+          description: Bookable Service ID
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+      tags:
+        - Bookable Resources
+  /importWbaBookableResources:
+    put:
+      summary: Change WBA Import Preferences
+      tags:
+        - Import Resources
+      responses:
+        '200':
+          description: OK
+      operationId: put-importWbaBookableResources
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: ../models/import.v1.yaml
+      description: Update import resource preferences that can be bookable for appointments
+    post:
+      summary: Import WBA Bookable Resources to your Scheduling Bookable Resources
+      tags:
+        - Import Resources
+      responses:
+        '200':
+          description: OK
+      operationId: post-importWbaBookableResources
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: ../models/import.v1.yaml
+      description: Import resource preferences that can be bookable for appointments
+  /bookableResourceCalendars:
+    get:
+      summary: Get a list of Bookable Resource Calendars
+      tags:
+        - Calendar
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: ../models/calendarResponseBody.v2.yaml
+      operationId: get-bookableResourceCalendars
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+        description: A bookable resource calendar describes the calendar information about the resource in terms of availablity to provide service to WBA customer
+      description: Get a list of Bookable Resource Calendars
+      parameters: []
+  '/bookableResourceCalendars/{id}':
+    parameters:
+      - schema:
+          type: string
+        name: id
+        in: path
+        required: true
+    get:
+      summary: Get a bookable resource calendars
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: ../models/calendarResponseBody.v2.yaml
+      operationId: get-bookableResourceCalendars-id
+      description: Get a specific Bookable Resource Calendar entry
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: string
+              description: id (calendarID or SlotID)
+        description: ''
+      parameters:
+        - schema:
+            type: string
+          in: query
+          name: id
+          description: calendarID
+      tags:
+        - Calendar

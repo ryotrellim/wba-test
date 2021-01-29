@@ -1,0 +1,33 @@
+title: availabilityResponseBody.v1
+type: object
+properties:
+  bookableServiceID:
+    type: string
+  startDate:
+    type: string
+  endDate:
+    type: string
+  availability:
+    type: array
+    items:
+      type: object
+      properties:
+        slot:
+          type: array
+          items:
+            type: object
+            properties:
+              bookableResourceId:
+                type: string
+              startDateTime:
+                type: string
+              endDateTime:
+                type: string
+              date:
+                type: string
+              locationId:
+                type: string
+              slotId:
+                type: string
+  bookableResourceId:
+    type: string

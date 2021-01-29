@@ -1,0 +1,31 @@
+title: updateAppointmentsRequestBody
+type: object
+x-tags:
+  - Appointments
+description: Update an Appointment
+properties:
+  customerId:
+    type: string
+  locationId:
+    type: string
+  bookableServiceId:
+    type: string
+  bookableResourceId:
+    type: array
+    items:
+      type: object
+      properties:
+        bookableResourceId1:
+          type: string
+        bookableResourceId2:
+          type: string
+  date:
+    type: string
+  startTime:
+    type: string
+  endTime:
+    type: string
+  status:
+    type: string
+    default: open
+    description: 'The status of an appointment.  Options include open, reserved, booked, canceled, checked-in, completed'

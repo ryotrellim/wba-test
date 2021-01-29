@@ -1,0 +1,31 @@
+title: updateBookableResourcesRequestBody
+type: object
+properties:
+  name:
+    type: string
+  email:
+    type: string
+  phone:
+    type: string
+  bookableResourceCategory:
+    type: string
+  jobCode:
+    type: string
+  jobTitle:
+    type: string
+  employeeId:
+    type: string
+  locationId:
+    type: string
+  eligibleBookableServices:
+    type: array
+    items:
+      type: object
+      properties:
+        BookableService1:
+          type: string
+  bookableResourceType:
+    type: string
+    example: 'person, room'
+    default: perso
+    description: 'The type of bookable resource that is required to administer the bookable service.  '

@@ -1,0 +1,233 @@
+openapi: 3.0.0
+info:
+  title: Scheduling Consumer API
+  version: '1.0'
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  /bookableServices:
+    get:
+      summary: Get a list of Bookable Services
+      description: 'A bookable service describes the service being offered, including the name, a short description, a service category, the duration of the service, where the service is offered, and the number of appointments that are required to resceive the appointment.  '
+      operationId: getBookableServices
+      parameters:
+        - in: query
+          name: locationID
+          description: The id of the store location whose bookable services you wish to view.
+          schema:
+            type: string
+            example: Company/7f739612-23e3-4e01-9418-6ec6bc16fa87
+          required: false
+        - in: query
+          name: bookableServiceCategory
+          description: Filter Bookable Services by their Category. Values include...
+          schema:
+            type: string
+            example: Company/7f739612-23e3-4e01-9418-6ec6bc16fa87
+          required: false
+      responses:
+        '200':
+          description: ok
+          content:
+            application/xml:
+              schema:
+                type: array
+                items:
+                  $ref: ../models/bookableServicesResponse.v1.yaml
+      tags:
+        - Bookable Services
+  '/bookableServices/{id}':
+    get:
+      summary: Retrieve a Bookable Service
+      description: Access a specific bookable service that can be booked as an appointments.
+      parameters:
+        - name: id
+          in: path
+          description: Bookable Service ID
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - in: query
+          name: locationID
+          description: The id of the store location whose bookable services you wish to view.
+          schema:
+            type: string
+            example: Company/7f739612-23e3-4e01-9418-6ec6bc16fa87
+          required: false
+        - in: query
+          name: bookableServiceCategory
+          description: Filter Bookable Services by their Category. Values include...
+          schema:
+            type: string
+            example: Company/7f739612-23e3-4e01-9418-6ec6bc16fa87
+          required: false
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: ../models/bookableServicesResponse.v1.yaml
+      tags:
+        - Bookable Services
+  /bookableResources:
+    get:
+      summary: List of Bookable Resources
+      description: |-
+        A bookable resource is a person who is qualified to adminster a bookable service.  
+
+        Open questions:
+        1.  Can a room be a bookable resource?  
+        2.  Can a group of people be a bookable resource?
+        3.  Can a thing (e.g., vaccine) be a bookable resource?
+      parameters:
+        - in: query
+          name: bookableResourceType
+          schema:
+            type: string
+            example: null
+          required: false
+        - schema:
+            type: string
+          in: query
+          name: bookableServiceID
+      responses:
+        '200':
+          description: ok
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: ../models/bookableResourceResponseBody.v1.yaml
+        '401':
+          description: Request is not authorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '502':
+          description: Connection error to required services failed.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      tags:
+        - Bookable Resources
+  '/bookableResources/{id}':
+    get:
+      summary: Retrieve a Bookable Resource
+      description: Access a specific bookable service that can be booked as an appointments.
+      parameters:
+        - name: id
+          in: path
+          description: Bookable Service ID
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - in: query
+          name: locationID
+          description: The id of the store location whose bookable services you wish to view.
+          schema:
+            type: string
+            example: Company/7f739612-23e3-4e01-9418-6ec6bc16fa87
+          required: false
+        - in: query
+          name: bookableServiceCategory
+          description: Filter Bookable Services by their Category. Values include...
+          schema:
+            type: string
+            example: Company/7f739612-23e3-4e01-9418-6ec6bc16fa87
+          required: false
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: ../models/bookableResourceResponseBody.v1.yaml
+      tags:
+        - Bookable Resources
+ /bookableResourceCalendar:
+    get:
+      summary: Return a list of available calendar slots.
+      operationId: get
+      description: 'Query for the available appointment time slots that match the filter criteria provided. LabCorp limits appointment times to within the next 90 days, regardless of the search criteria given. The optional startDate and numberOfDays parameters can be used to shift the boundaries of the search results within that overall 90 day limitation, ie if startDate is 80 days out then a maximum of 10 days worth of possible times can be returned even if more days are requested.<br />transactionId has to be passed on header for production support and tracking.'
+      parameters:
+        - in: query
+          name: locationId
+          description: ID of a Location.
+          schema:
+            type: string
+            example: '13733'
+          required: true
+        - in: query
+          name: serviceId
+          description: ID of service.
+          schema:
+            type: string
+            example: '19'
+          required: true
+        - in: query
+          name: startDateTime
+          description: Start date and time.
+          schema:
+            type: string
+            pattern: '^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$'
+            example: '2020-06-24T13:00'
+          required: true
+        - in: query
+          name: endDateTime
+          description: End date and time
+          schema:
+            type: string
+            pattern: '^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$'
+            example: '2020-07-24T13:00'
+        - in: query
+          name: organizationId
+          description: Organization ID
+          schema:
+            type: string
+            example: Organization/7f739612-23e3-4e01-9418-6ec6bc16fa87
+        - in: query
+          name: appointmentType
+          description: Type of an appointment
+          schema:
+            type: string
+            enum:
+              - checkup
+              - emergency
+              - followup
+              - routine
+              - walkin
+      responses:
+        '200':
+          description: Time Slots Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/SlotsResponse'
+        '400':
+          description: The filter input was invalid.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationError'
+        '401':
+          description: Request is not authorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '502':
+          description: Connection error to the LabCorp systems.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      tags:
+        - Bookable Resource Calendar

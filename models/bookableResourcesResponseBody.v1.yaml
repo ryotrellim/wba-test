@@ -1,0 +1,35 @@
+bookableResourcesResponse:
+      type: object
+      title: ''
+      properties:
+        id:
+          type: string
+        employeeId:
+          type: string
+        locationId:
+          type: string
+        firstName:
+          type: string
+        lastName:
+          type: string
+        email:
+          type: string
+        phone:
+          type: string
+        bookableResourcesCategory:
+          type: string
+        jobCode:
+          type: string
+        jobTitle:
+          type: string
+        eligibleBookableServices:
+          type: array
+          items:
+            type: array
+            items:
+              type: object
+              properties:
+                bookableServiceName:
+                  type: string
+                bookableServiceId:
+                  type: string

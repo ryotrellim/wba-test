@@ -1,0 +1,31 @@
+title: bookableServicesResponse
+type: object
+properties:
+  id:
+    type: string
+  bookableServiceName:
+    type: string
+  bookableServiceCategory:
+    type: string
+    description: 'The category can be used to group similar services, make it easier for front-end developers to build user journey''s around specific groups of services.'
+    example: 'Immunizations, Lab Tests, Primary Care Services, etc'
+  bookableServiceDescription:
+    type: string
+  duration:
+    type: integer
+    default: 30
+    description: The amount of time in minutes that is required to administer the service.
+  requiredNumberOfAppointments:
+    type: integer
+    default: 1
+    description: The number of appointments required to complete the service.
+  locationId:
+    type: string
+  availability:
+    type: array
+    items:
+      type: array
+      items:
+        $ref: ./availability.v1.yaml
+required:
+  - locationId

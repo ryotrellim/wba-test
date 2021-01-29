@@ -1,0 +1,52 @@
+title: appointmentsRequestBody
+type: object
+x-tags:
+  - Appointments
+description: Create an Appointment
+properties:
+  customerId:
+    type: array
+    description: A unique identifier for the Customer who will be receiving the appointment.  This information may be retrieved from the Customer Identity API.
+    items:
+      type: object
+      properties:
+        memberId:
+          type: string
+        recipientId:
+          type: string
+  locationId:
+    type: string
+    description: A unique identifier for the location where the customer will receive the appointment.
+  bookableServiceId:
+    type: string
+    description: The unique identifier for the bookable service that will be administered at the appointment.
+  bookableResourceId:
+    type: array
+    description: 'The unique identifier(s) of the bookable resource(s) that are required to administer the appointment.  '
+    items:
+      type: object
+      properties:
+        bookableResourceId1:
+          type: string
+          description: 'The unique identifier of the first bookable resource that is required to administer the appointment.  '
+        bookableResourceId2:
+          type: string
+          description: The unique identifier of the second bookable resource that is required to administer the appointment.
+  date:
+    type: string
+    description: 'The date '
+  startTime:
+    type: string
+  endTime:
+    type: string
+  status:
+    type: string
+    default: open
+    description: 'The status of an appointment.  Options include open, reserved, booked, canceled, checked-in, completed'
+required:
+  - customerId
+  - locationId
+  - bookableServiceId
+  - bookableResourceId
+  - date
+  - startTime

@@ -1,0 +1,381 @@
+openapi: 3.0.0
+tags:
+  - name: Scheduling
+  - name: Scheduling Customer Journey API
+  - name: Bookable Services
+  - name: Bookable Resources
+  - name: Appointments
+  - name: Availability
+  - name: Calendar
+info:
+  title: Customer Journey API
+  version: '1.0'
+  description: Utilize these APIs to create a front-end user journey
+  contact:
+    name: Brian Smith
+    email: brian.robert.smith@walgreens.com
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  /bookableServices:
+    get:
+      summary: Get a list of Bookable Services
+      description: 'A bookable service describes the service being offered, including the name, a short description, a service category, the duration of the service, where the service is offered, and the number of appointments that are required to resceive the appointment.  '
+      operationId: getBookableServices
+      parameters:
+        - in: query
+          name: locationID
+          description: The id of the store location whose bookable services you wish to view.
+          schema:
+            type: number
+            example: Company/7f739612-23e3-4e01-9418-6ec6bc16fa87
+          required: false
+        - in: query
+          name: bookableServiceCategory
+          description: Filter Bookable Services by their Category. Values include...
+          schema:
+            type: string
+            example: Company/7f739612-23e3-4e01-9418-6ec6bc16fa87
+          required: false
+      responses:
+        '200':
+          description: ok
+          content:
+            application/xml:
+              schema:
+                type: array
+                items:
+                  $ref: ../models/bookableServicesResponse.v1.yaml
+      tags:
+        - Bookable Services
+  '/bookableServices/{id}':
+    get:
+      summary: Get a Bookable Service
+      operationId: getBookableService
+      description: Access a specific bookable service that can be booked as an appointments.
+      parameters:
+        - name: id
+          in: path
+          description: Bookable Service ID
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - schema:
+            type: string
+          in: query
+          name: id
+          description: Bookable Service ID
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: ../models/bookableServicesResponse.v1.yaml
+      tags:
+        - Bookable Services
+  /bookableResources:
+    get:
+      summary: Get a List of Bookable Resources
+      operationId: getBookableResources
+      description: Get a list of bookable resources required to administer a service.
+      parameters:
+        - schema:
+            type: number
+          in: query
+          name: bookableServiceID
+        - schema:
+            type: number
+          in: query
+          name: locationId
+      responses:
+        '200':
+          description: ok
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: ../models/bookableResourceResponseBody.v1.yaml
+      tags:
+        - Bookable Resources
+  '/bookableResources/{id}':
+    get:
+      summary: Get a Bookable Resource
+      operationId: getBookableResource
+      description: Access a specific bookable service that can be booked as an appointments.
+      parameters:
+        - name: id
+          in: path
+          description: Bookable Service ID
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: ../models/bookableResourceResponseBody.v1.yaml
+      tags:
+        - Bookable Resources
+  /appointments:
+    get:
+      summary: Get a List of Appointments
+      description: Get a list of Appointments
+      tags:
+        - Appointments
+      responses:
+        '200':
+          description: Get Appointments
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: ../models/appointmentsResponse.v1.yaml
+      operationId: get-appointments
+      parameters:
+        - schema:
+            type: number
+          in: query
+          name: locationId
+        - schema:
+            type: number
+          in: query
+          name: bookableServiceId
+        - schema:
+            type: number
+          in: query
+          name: customerId
+        - schema:
+            type: number
+          in: query
+          name: bookableResourceId
+    post:
+      summary: Create an Appointment
+      tags:
+        - Appointments
+      description: Create a new appointment
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+      operationId: post-appointments
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: ../models/appointmentsRequestBody.v1.yaml
+  '/appointments/{id}':
+    parameters:
+      - schema:
+          type: string
+        name: id
+        in: path
+        required: true
+    get:
+      summary: Get an Appointment
+      tags:
+        - Appointments
+      responses:
+        '200':
+          description: OK
+      operationId: get-appointments-id
+      description: Get a single appointment
+      parameters:
+        - schema:
+            type: number
+          in: query
+          name: id
+          description: appointmentID
+    put:
+      summary: Update an Appointment
+      tags:
+        - Appointments
+      responses:
+        '200':
+          description: OK
+      operationId: put-appointments-id
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: ../models/updateAppointmentsRequestBody.v1.yaml
+      description: Update an Appointment
+    delete:
+      summary: Delete an Appointment
+      tags:
+        - Appointments
+      responses:
+        '200':
+          description: OK
+      operationId: delete-appointments-id
+      description: Delete an Appointment
+      parameters:
+        - schema:
+            type: number
+          in: query
+          name: id
+          description: appointmentID
+  '/bookableResourceCalendars/{id}':
+    get:
+      summary: Get a Bookable Resource Calendar
+      parameters:
+        - schema:
+            type: string
+          name: id
+          in: path
+          required: true
+        - schema:
+            type: number
+          in: query
+          name: id
+          description: calendarID
+      tags:
+        - Calendar
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: ../models/calendarResponseBody.v2.yaml
+            application/xml:
+              schema:
+                type: object
+                properties:
+                  '':
+                    $ref: ../models/calendarResponseBody.v2.yaml
+      operationId: get-bookableResourceCalendars
+      description: Get a Bookable Resource Calendar
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: string
+    parameters: []
+    delete:
+      summary: Delete Bookable Resource Calendar
+      operationId: delete-bookableResourceCalendars-id
+      responses:
+        '200':
+          description: OK
+      description: Delete Bookable Resource Calendar
+      parameters:
+        - schema:
+            type: number
+          in: query
+          name: id
+          description: 'calendarID '
+          required: true
+      tags:
+        - Calendar
+    put:
+      summary: Update Bookable Resource Calendar Entry
+      operationId: put-bookableResourceCalendars-id
+      responses:
+        '200':
+          description: OK
+      description: Update Bookable Resource Calendar Entry
+      parameters:
+        - schema:
+            type: number
+          in: query
+          name: id
+          description: calendarID
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: ../models/calendarRequestBody.v2.json
+      tags:
+        - Calendar
+    post:
+      summary: Create Entry in Bookable Resource Calendar
+      operationId: post-bookableResourceCalendars-id
+      responses:
+        '200':
+          description: OK
+      description: Create Entry in Bookable Resource Calendar
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: ../models/calendarRequestBody.v2.json
+      tags:
+        - Calendar
+  /availability:
+    get:
+      summary: Get Availability
+      tags:
+        - Availability
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: ../models/availabilityResponseBody.v1.yaml
+      operationId: get-calendarAvailability
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: ../models/availabilityRequestBody.v1.yaml.json
+          application/xml:
+            schema:
+              $ref: ../models/availabilityRequestBody.v1.yaml.json
+      description: Get open slots
+    parameters: []
+  /bookableResourceCalendars:
+    get:
+      summary: Get a list of all Bookable Resource Calendars
+      tags:
+        - Calendar
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: ../models/calendarResponseBody.v2.yaml
+            application/xml:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  '':
+                    $ref: ../models/calendarResponseBody.v2.yaml
+            multipart/form-data:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  '':
+                    $ref: ../models/calendarResponseBody.v2.yaml
+      operationId: getBookableResourceCalendars
+      parameters:
+        - schema:
+            type: string
+          in: query
+          name: locationId
+        - schema:
+            type: string
+          in: query
+          name: bookableResourceId
+      description: Get a list of bookable resource calendars
+    parameters: []

@@ -1,0 +1,7 @@
+title: bookableServiceCategoryResponse.v1
+type: array
+items:
+  type: object
+  properties:
+    bookableServiceCategory:
+      type: string

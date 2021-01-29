@@ -1,0 +1,24 @@
+title: updateBookableServicesRequestBody
+type: object
+description: Request body when updating a bookable services
+properties:
+  bookableServiceName:
+    type: string
+  bookableServiceCategory:
+    type: string
+  bookableServiceDescription:
+    type: string
+  duration:
+    type: integer
+    default: 30
+  requiredNumberOfAppointments:
+    type: integer
+    default: 1
+  locationId:
+    type: string
+  availability:
+    type: array
+    items:
+      type: array
+      items:
+        $ref: ./availability.v1.yaml

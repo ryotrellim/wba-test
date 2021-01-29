@@ -1,0 +1,35 @@
+title: bookableResourcesRequestBody.v1
+type: object
+properties:
+  name:
+    type: string
+  email:
+    type: string
+  phone:
+    type: string
+  bookableResourceCategory:
+    type: string
+  jobCode:
+    type: string
+  jobTitle:
+    type: string
+  employeeId:
+    type: string
+  locationId:
+    type: string
+  eligibleBookableServices:
+    type: array
+    items:
+      type: object
+      properties:
+        bookableServiceId:
+          type: string
+  availability:
+    type: array
+    items:
+      type: array
+      items:
+        $ref: ./availability.v1.yaml
+required:
+  - name
+  - email

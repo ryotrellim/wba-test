@@ -1,0 +1,25 @@
+{
+  "title": "calendarRequestBody.v2",
+  "type": "object",
+  "description": "",
+  "properties": {
+    "employeeId": {
+      "type": "string"
+    },
+    "startTime": {
+      "type": "string"
+    },
+    "endTime": {
+      "type": "string"
+    },
+    "date": {
+      "type": "string"
+    },
+    "serviceDuration": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string"
+    }
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "title": "availabilityRequestBody.v1.yaml",
+  "type": "object",
+  "description": "",
+  "properties": {
+    "bookableResourceId": {
+      "type": "string"
+    },
+    "startDate": {
+      "type": "string",
+      "description": "Start Date for availability search"
+    },
+    "endDate": {
+      "type": "string",
+      "description": "End Date for availability search"
+    },
+    "bookableServiceID": {
+      "type": "string",
+      "description": "Service Id for availability search"
+    },
+    "locationId": {
+      "type": "string"
+    },
+    "zipCode": {
+      "type": "string"
+    },
+    "city": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "startDate",
+    "endDate",
+    "bookableServiceID"
+  ]
+}
